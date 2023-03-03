@@ -16,5 +16,6 @@ export default defineConfig({
     hmr: {
         clientPort: 8080,
     },
+    port: 8080,
   },
 })

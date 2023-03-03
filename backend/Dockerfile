@@ -10,6 +10,8 @@ RUN apk add --update --virtual \
     yarn \
     libffi-dev \
     git \
+    gcompat \
+    musl \
     tzdata \
     && rm -rf /var/cache/apk/*
 
@@ -22,6 +24,8 @@ ENV BUNDLE_PATH /gems
 ENV GEM_PATH /gems
 ENV GEM_HOME /gems
 ENV BUNDLE_APP_CONFIG /gems
+
+#RUN bundle lock --add-platform aarch64-linux
 
 RUN bundle install
 RUN yarn install

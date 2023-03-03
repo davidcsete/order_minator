@@ -5,7 +5,7 @@ services:
       - SYS_NICE
     restart: always
     environment:
-      - POSTGRES_DATABASE=rails_api
+      - POSTGRES_DATABASE=order_minator_development
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=Aa123456
     ports:
@@ -19,6 +19,7 @@ services:
       - PORT=3000
     volumes:
       - ./backend:/webapp
+    #command: bash -c "bundle install"
     ports:
       - "3000:3000" # use port that you want to in your local instead of 3000
     depends_on:
@@ -33,7 +34,7 @@ services:
        - ./order_minator_vue_frontend:/app
        - /app/node_modules
     ports:
-      - "8080:3000"
+      - "8080:8080"
 volumes:
   db:
     driver: local

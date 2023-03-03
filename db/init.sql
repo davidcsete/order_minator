@@ -1,3 +1,3 @@
 CREATE USER root;
-CREATE DATABASE rails_api;
-GRANT ALL PRIVILEGES ON DATABASE rails_api TO root;
+CREATE DATABASE order_minator_development;
+GRANT ALL PRIVILEGES ON DATABASE order_minator_development TO root;
