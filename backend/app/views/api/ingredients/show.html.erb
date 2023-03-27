@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_ingredient %>
+
+<div>
+  <%= link_to "Edit this ingredient", edit_api_ingredient_path(@api_ingredient) %> |
+  <%= link_to "Back to ingredients", api_ingredients_path %>
+
+  <%= button_to "Destroy this ingredient", @api_ingredient, method: :delete %>
+</div>
