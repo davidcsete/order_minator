@@ -11,7 +11,7 @@ services:
     ports:
       - '5432:5432'
     volumes:
-      - db:/var/lib/postgresql
+      - ./db/data:/var/lib/postgresql
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
   api:
     build: ./backend
@@ -19,7 +19,7 @@ services:
       - PORT=3000
     volumes:
       - ./backend:/webapp
-    #command: bash -c "bundle install"
+    #command: bundle install
     ports:
       - "3000:3000" # use port that you want to in your local instead of 3000
     depends_on:

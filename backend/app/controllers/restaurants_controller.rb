@@ -1,5 +1,5 @@
 class RestaurantsController < ApplicationController
-  before_action :set_restaurant, only: %i[ show update destroy ]
+  before_action :set_restaurant, only: %i[show update destroy]
 
   # GET /restaurants
   # GET /restaurants.json
@@ -41,13 +41,14 @@ class RestaurantsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_restaurant
-      @restaurant = Restaurant.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def restaurant_params
-      params.require(:restaurant).permit(:name, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_restaurant
+    @restaurant = Restaurant.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def restaurant_params
+    params.require(:restaurant).permit(:name, :description)
+  end
 end
