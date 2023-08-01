@@ -7,6 +7,11 @@ class MembersController < ApplicationController
     render json: { message: "If you see this, you're in!", user: user }
   end
 
+  def verify_id
+    user = get_user_from_token
+    render json: user.id == params[:id].to_i
+  end
+
   private
 
   def get_user_from_token
@@ -15,7 +20,6 @@ class MembersController < ApplicationController
         request.headers["Authorization"].split(" ")[1],
         ENV["DEVISE_JWT_SECRET_KEY"]
       ).first
-    puts jwt_payload
     user_id = jwt_payload["sub"]
     user = User.find(user_id.to_s)
   end

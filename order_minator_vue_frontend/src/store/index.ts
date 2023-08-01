@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import userSessionManager from "./modules/user_session_manager";
+import sessionManager from "./modules/user/session_manager";
 import restaurantList from "./modules/restaurant_list";
 
 export default createStore({
@@ -7,7 +7,12 @@ export default createStore({
   mutations: {},
   actions: {},
   modules: {
-    userSessionManager: userSessionManager,
+    user: {
+      namespaced: true,
+      modules:{
+        sessionManager: sessionManager
+      }
+    },
     restaurantList: restaurantList
   },
 });

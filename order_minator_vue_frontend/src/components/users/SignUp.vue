@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import OwnerSignUp from "./owner/OwnerSignUp.vue";
+import OwnerSignUp from "@/components/users/owner/OwnerSignUp.vue";
 import { ref } from 'vue';
-
 const user_type = ref("Customer");
-
 </script>
 <template>
     <div class="p-10 text-gray-900 dark:text-gray-300">
@@ -33,10 +31,10 @@ const user_type = ref("Customer");
             <OwnerSignUp/>
         </div>
         <div v-else-if="user_type== 'Customer'">
-            Cust
+            TODO Cust
         </div>
         <div v-else>
-            Assoc
+            TODO Assoc
         </div>
     </div>
 </template>

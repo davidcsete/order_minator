@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:3000/";
-import store from "../index"
+import store from "../../index"
+import router from '../../../router'
 
 
 
@@ -10,9 +11,7 @@ const state = {
   auth_token: null,
   user: {
     id: null,
-    user_name: null,
     email: null,
-    is_admin: null,
     type: null,
     company_name: null
   },
@@ -24,24 +23,34 @@ const getters = {
   getUserEmail(state: { user: { email: any } }) {
     return state.user?.email;
   },
-  getUserID(state: { user: { id: any } }) {
+  getUserName(state: { user: { first_name: any, last_name: any } }) {
+    return state.user?.first_name + " " + state.user?.last_name;
+  },
+  getUserId(state: { user: { id: any } }) {
     return state.user?.id;
   },
-   isLoggedIn(state: {
+  getUserType(state: { user: { type: any } }) {
+    return state.user?.type;
+  },
+  isOwner(state: { user: { type: any } }) {
+    return state.user?.type === 'Owner';
+  },
+  isLoggedIn(state: {
      user: any; auth_token: string | null
 }) {
+
+    if (state.user == null)
+      return false;
     const auth_token = localStorage.getItem("auth_token")
     const isLoggedOut = state.auth_token == null || state.auth_token == JSON.stringify(null) || auth_token == null;
     if( auth_token != null && (state.auth_token == null)) {
-       store.dispatch("userSessionManager/loginUserWithToken",
+       store.dispatch("user/sessionManager/loginUserWithToken",
        {payload:{auth_token:auth_token}})
+
       return state.user != null;
     }
 
     return !isLoggedOut;
-  },
-  isAdmin(state: { user: { is_admin: any } }) {
-    return state.user?.is_admin;
   },
 
 };
@@ -71,6 +80,8 @@ const actions = {
           reject(error);
         });
     });
+    router.push({name:'home'})
+
   },
   logoutUser({ commit }: any) {
     const config = {
@@ -92,24 +103,51 @@ const actions = {
         });
     });
   },
-  loginUserWithToken({commit}: any, payload: { auth_token: any }) {
+  loginUserWithToken({commit}: any, payload: {
+    payload: {auth_token: any}
+}) {
     const config = {
       headers: {
         Authorization: payload.payload.auth_token,
       },
     };
+
     new Promise((resolve, reject) => {
       axios
         .get(`${BASE_URL}member-data`, config)
         .then((response) => {
           commit("setUserInfoFromToken",response);
-          // mutations.setUserInfoFromToken(state,{data:{user:{}}})
           resolve(response);
         })
         .catch((error) => {
           reject(error);
         });
     });
+  },
+  async verifyUserId({commit}: any, payload: {
+    payload: {auth_token: any, user_id: any}
+}) {
+    const config = {
+      headers: {
+        Authorization: payload.payload.auth_token
+      },
+      params: {
+        id: payload.payload.user_id
+      }
+    };
+
+    let response = await new Promise((resolve, reject) => {
+      axios
+        .get(`${BASE_URL}member-verify-id`, config)
+        .then((response) => {
+
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+    return response;
   },
 };
 const mutations = {
@@ -132,17 +170,18 @@ const mutations = {
 }
   ) {
     state.user = data.data.user;
+
     state.auth_token = localStorage.getItem("auth_token");
   },
   resetUserInfo(state: {
-    user: { id: null ; user_name: null; email: null; is_admin: null };
+    user: { id: null ; user_name: null; email: null; type: null };
     auth_token: null;
   }) {
     state.user = {
       id: null,
       user_name: null,
       email: null,
-      is_admin: null,
+      type: null,
     };
     state.auth_token = null;
     localStorage.removeItem("auth_token");

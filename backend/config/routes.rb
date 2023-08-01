@@ -13,7 +13,7 @@ Rails.application.routes.draw do
                registrations: "users/registrations"
              }
   get "/member-data", to: "members#show"
-
+  get "/member-verify-id", to: "members#verify_id"
   # Defines the root path route ("/")
   # root "articles#index"
 end
